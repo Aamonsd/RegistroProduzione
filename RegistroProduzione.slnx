@@ -1,3 +1,6 @@
 <Solution>
+  <Folder Name="/database/">
+    <File Path="database/Schema.sql" />
+  </Folder>
   <Project Path="RegistroProduzione.Core/RegistroProduzione.Core.csproj" />
 </Solution>

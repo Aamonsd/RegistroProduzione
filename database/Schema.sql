@@ -1,0 +1,24 @@
+
+DROP TABLE IF EXISTS Produzioni;
+DROP TABLE IF EXISTS Macchine;
+
+CREATE TABLE Macchine(
+	
+	Codice NVARCHAR(20) NOT NULL PRIMARY KEY,
+	Nome NVARCHAR(100) NOT NULL,
+	Reparto NVARCHAR(50) NOT NULL,
+	Attiva BIT  DEFAULT 1 NOT NULL
+
+);
+
+CREATE TABLE Produzioni(
+	
+	Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	CodiceMacchina NVARCHAR(20) NOT NULL FOREIGN KEY REFERENCES Macchine(Codice),
+	Data DATE NOT NULL ,
+	Turno TINYINT NOT NULL CHECK (Turno in (1,2,3)),
+	PezziBuoni INT NOT NULL DEFAULT 0 CHECK (PezziBuoni>=0),
+	PezziScartati INT NOT NULL DEFAULT 0 CHECK (PezziScartati>=0),
+
+	CONSTRAINT UQ_Produzioni_MacchinaDataTurno UNIQUE (CodiceMacchina, Data, Turno)
+);
