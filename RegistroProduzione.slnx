@@ -2,5 +2,6 @@
   <Folder Name="/database/">
     <File Path="database/Schema.sql" />
   </Folder>
+  <Project Path="RegistroProduzione.App/RegistroProduzione.App.csproj" Id="2939aa1a-20e9-4767-80f0-d0ab9b8a17cb" />
   <Project Path="RegistroProduzione.Core/RegistroProduzione.Core.csproj" />
 </Solution>

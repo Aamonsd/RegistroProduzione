@@ -41,7 +41,7 @@ namespace RegistroProduzione.Core.Services
                 throw new ArgumentException("il numero di pezzi non puo essere negativo");
 
             if (data > DateOnly.FromDateTime(DateTime.Today))
-                throw new ArgumentException("La data non può essere nel futuro.", nameof(data));
+                throw new ArgumentException("La data non può essere nel futuro.");
 
             var macchina = repositoryMacchine.TrovaPerCodice(codiceMacchina);
 
@@ -54,10 +54,10 @@ namespace RegistroProduzione.Core.Services
             if (repositoryProduzioni.Esiste(macchina.Codice, data, turno)) 
                 throw new InvalidOperationException($"Il turno {turno} del {data} è già registrato per {codiceMacchina}");
 
-            var RegistrazioneProduzione= repositoryProduzioni.Registra(macchina.Codice, data, turno, pezziBuoni, pezziScartati);
+            var registrazioneProduzione= repositoryProduzioni.Registra(macchina.Codice, data, turno, pezziBuoni, pezziScartati);
 
-            if (RegistrazioneProduzione.PercentualeScarto >= SogliaScarto) ScartoAlto?.Invoke(this, new ScartoAltoEventArgs(RegistrazioneProduzione));
-            return RegistrazioneProduzione;
+            if (registrazioneProduzione.PercentualeScarto >= SogliaScarto) ScartoAlto?.Invoke(this, new ScartoAltoEventArgs(registrazioneProduzione));
+            return registrazioneProduzione;
             
         }
 
