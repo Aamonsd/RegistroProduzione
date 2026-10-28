@@ -10,7 +10,7 @@ namespace RegistroProduzione.Core.Services
         private readonly IProduzioniRepository repositoryProduzioni;
 
         public event EventHandler<ScartoAltoEventArgs>? ScartoAlto;
-        private const decimal SogliaScarto = 5m;
+        public const decimal SogliaScarto = 5m;
 
         public ServizioProduzione(IMacchineRepository repositoryMacchine, IProduzioniRepository repositoryProduzione)
         {
