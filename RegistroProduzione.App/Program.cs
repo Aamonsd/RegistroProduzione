@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using RegistroProduzione.Core.Avvio;
 using RegistroProduzione.Core.Events;
 using RegistroProduzione.Core.Models;
 using RegistroProduzione.Core.Repositories;
@@ -29,10 +30,7 @@ namespace RegistroProduzione.App
             string stringaConnessione = configuration.GetConnectionString("RegistroProduzione")
                 ?? throw new InvalidOperationException("Stringa di connessione 'RegistroProduzione' mancante in appsettings.json");
 
-            ServizioProduzione servizio = new ServizioProduzione(
-                new SqlMacchineRepository(stringaConnessione),
-                new SqlProduzioniRepository(stringaConnessione)
-                );
+            var servizio = FabbricaServizio.Crea(stringaConnessione);
 
             servizio.ScartoAlto += ScartoAltoHandler;
 

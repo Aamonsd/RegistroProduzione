@@ -4,4 +4,5 @@
   </Folder>
   <Project Path="RegistroProduzione.App/RegistroProduzione.App.csproj" Id="2939aa1a-20e9-4767-80f0-d0ab9b8a17cb" />
   <Project Path="RegistroProduzione.Core/RegistroProduzione.Core.csproj" />
+  <Project Path="RegistroProduzione.Wpf/RegistroProduzione.Wpf.csproj" Id="cec7a6cf-45a2-4b8f-8cc6-8597a29ddbd6" />
 </Solution>
