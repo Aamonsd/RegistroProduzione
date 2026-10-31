@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using RegistroProduzione.Core.Avvio;
-using RegistroProduzione.Core.Repositories;
-using RegistroProduzione.Core.Services;
-using System.Configuration;
-using System.Data;
+using RegistroProduzione.Wpf.ViewModels;
 using System.Windows;
 
 namespace RegistroProduzione.Wpf
@@ -28,7 +25,7 @@ namespace RegistroProduzione.Wpf
             var servizio = FabbricaServizio.Crea(stringaConnessione);
 
             var finestra = new MainWindow();
-            finestra.Title= $"Registro produzione - {servizio.OttieniMacchine().Count} macchine";
+            finestra.DataContext = new MainViewModel(servizio);
             finestra.Show();
         }
     }

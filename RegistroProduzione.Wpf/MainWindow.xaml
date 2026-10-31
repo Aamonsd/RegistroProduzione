@@ -5,8 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RegistroProduzione.Wpf"
         mc:Ignorable="d"
+        xmlns:vm="clr-namespace:RegistroProduzione.Wpf.ViewModels"
+        xmlns:views="clr-namespace:RegistroProduzione.Wpf.Views"
+
         Title="MainWindow" Height="450" Width="800">
+    
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:MacchineViewModel}">
+            <views:MacchineView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RegistraProduzioneViewModel}">
+            <views:RegistraProduzioneView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RiepilogoViewModel}" >
+            <views:RiepilogoView/>
+        </DataTemplate>
+        
+        
+    </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <Button Content="Macchine" Width="100" Height="40" Margin="5,60,10,10" HorizontalAlignment="Left" Command="{Binding MostraMacchineCommand}"></Button>
+            <Button Content="Registra produzione" Width="100" Height="40" Margin="5,0,10,10 " HorizontalAlignment="Left" Command="{Binding MostraRegistraProduzioneCommand}"></Button>
+            <Button Content="Riepilogo" Width="100" Height="40" Margin="5,0,10,10" HorizontalAlignment="Left" Command="{Binding MostraRiepilogoCommand}"></Button>
+        </StackPanel>
+        <ContentControl Grid.Column="1" Content="{Binding ViewModelCorrente}"></ContentControl>
 
     </Grid>
 </Window>
