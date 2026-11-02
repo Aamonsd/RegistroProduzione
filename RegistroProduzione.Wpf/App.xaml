@@ -1,8 +1,247 @@
 ﻿<Application x:Class="RegistroProduzione.Wpf.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:RegistroProduzione.Wpf">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
-         
+
+        <!-- ===== Colori (stessa palette del magazzino) ===== -->
+        <SolidColorBrush x:Key="ColoreScuro" Color="#14213D"/>
+        <SolidColorBrush x:Key="ColorePrimario" Color="#2B6CB0"/>
+        <SolidColorBrush x:Key="ColoreTestoSecondario" Color="#6B7280"/>
+        <SolidColorBrush x:Key="ColoreBordo" Color="#E3E6EB"/>
+        <SolidColorBrush x:Key="ColoreBordoCampo" Color="#D7DBE2"/>
+        <SolidColorBrush x:Key="ColoreSfondo" Color="#F5F6F8"/>
+        <SolidColorBrush x:Key="ColoreErrore" Color="#C0392B"/>
+        <SolidColorBrush x:Key="ColoreSuccesso" Color="#2F855A"/>
+        <SolidColorBrush x:Key="ColoreAvviso" Color="#B7791F"/>
+
+        <FontFamily x:Key="FontTitoli">pack://application:,,,/Fonts/#Space Grotesk</FontFamily>
+
+        <!-- ===== Icone (percorsi su una griglia 24x24) ===== -->
+        <Geometry x:Key="IconaLogo">M4,20 V10 L9,13 V10 L14,13 V4 H20 V20 Z</Geometry>
+        <Geometry x:Key="IconaMacchine">M12,8 A4,4 0 1 1 12,16 A4,4 0 1 1 12,8 Z M12,2 V5 M12,19 V22 M2,12 H5 M19,12 H22 M4.9,4.9 L7,7 M17,17 L19.1,19.1 M4.9,19.1 L7,17 M17,7 L19.1,4.9</Geometry>
+        <Geometry x:Key="IconaRegistra">M5,3 H19 V21 H5 Z M9,8 H15 M9,12 H15 M9,16 H12</Geometry>
+        <Geometry x:Key="IconaRiepilogo">M4,20 H20 M7,20 V12 M12,20 V6 M17,20 V15</Geometry>
+
+        <!-- ===== Testi ===== -->
+        <Style x:Key="TitoloPagina" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource ColoreScuro}"/>
+            <Setter Property="FontFamily" Value="{StaticResource FontTitoli}"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <Style x:Key="SottotitoloPagina" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource ColoreTestoSecondario}"/>
+        </Style>
+
+        <Style x:Key="EtichettaCampo" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource ColoreScuro}"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style x:Key="IntestazioneColonna" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource ColoreTestoSecondario}"/>
+        </Style>
+
+        <Style x:Key="CellaTabella" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource ColoreScuro}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="CardEtichetta" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource ColoreTestoSecondario}"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style x:Key="CardValore" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource ColoreScuro}"/>
+            <Setter Property="FontFamily" Value="{StaticResource FontTitoli}"/>
+        </Style>
+
+        <Style x:Key="Messaggio" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <!-- ===== Card: riquadro bianco con angoli arrotondati ===== -->
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColoreBordo}"/>
+        </Style>
+
+        <!-- ===== Voce del menu laterale (RadioButton: una sola selezionata) ===== -->
+        <Style x:Key="VoceMenu" TargetType="RadioButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#A9B4C9"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Padding" Value="12,11"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="10">
+                            <StackPanel Orientation="Horizontal">
+                                <Viewbox Width="18" Height="18">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Stroke="{TemplateBinding Foreground}" StrokeThickness="2"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <ContentPresenter Margin="12,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="#1F2F52"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- ===== Pulsante principale ===== -->
+        <Style x:Key="PulsantePrimario" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource ColorePrimario}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Sfondo" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Sfondo" Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== Casella di testo ===== -->
+        <Style x:Key="CampoTesto" TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource ColoreScuro}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColoreBordoCampo}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="4,0"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border CornerRadius="8" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource ColorePrimario}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- ===== Menu a tendina ===== -->
+        <Style x:Key="CampoScelta" TargetType="ComboBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource ColoreScuro}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColoreBordoCampo}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <!-- La casella -->
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8"/>
+                            <!-- L'elemento scelto -->
+                            <ContentPresenter Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="Left" VerticalAlignment="Center"
+                                              IsHitTestVisible="False"/>
+                            <!-- La freccia -->
+                            <Path Data="M0,0 L5,5 L10,0" Stroke="{StaticResource ColoreTestoSecondario}" StrokeThickness="1.5"
+                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                  HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,14,0"
+                                  IsHitTestVisible="False"/>
+                            <!-- Pulsante invisibile che apre e chiude la lista -->
+                            <ToggleButton Focusable="False" ClickMode="Press"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="Transparent"/>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <!-- La lista che si apre sotto -->
+                            <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   Placement="Bottom" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                <Border Background="White" BorderBrush="{StaticResource ColoreBordoCampo}" BorderThickness="1"
+                                        CornerRadius="8" Margin="0,4,0,0" Padding="0,4"
+                                        MinWidth="{TemplateBinding ActualWidth}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsDropDownOpen" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource ColorePrimario}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- ===== Calendario ===== -->
+        <Style x:Key="CampoData" TargetType="DatePicker">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource ColoreScuro}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColoreBordoCampo}"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
     </Application.Resources>
 </Application>

@@ -17,6 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Fonts\SpaceGrotesk-Bold.ttf" />
+    <Resource Include="Fonts\SpaceGrotesk-SemiBold.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -4,46 +4,136 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="20">
+             d:DesignHeight="700" d:DesignWidth="1000">
+    <Grid Margin="44,40">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>   <!-- titolo -->
-            <RowDefinition Height="Auto"/>   <!-- form -->
-            <RowDefinition Height="Auto"/>   <!-- errore -->
-            <RowDefinition Height="*"/>      <!-- tabella: tutto lo spazio che resta -->
+            <RowDefinition Height="Auto"/>   <!-- intestazione -->
+            <RowDefinition Height="Auto"/>   <!-- card aggiunta -->
+            <RowDefinition Height="*"/>      <!-- card tabella -->
         </Grid.RowDefinitions>
 
-        <!-- Titolo -->
-        <TextBlock Grid.Row="0" Text="Macchine" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,15"/>
-
-        <!-- Form di aggiunta, su una riga -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-            <TextBlock Text="Codice" VerticalAlignment="Center" Margin="0,0,6,0"/>
-            <TextBox Text="{Binding Codice}" Width="100" Padding="4" Margin="0,0,15,0"/>
-
-            <TextBlock Text="Nome" VerticalAlignment="Center" Margin="0,0,6,0"/>
-            <TextBox Text="{Binding Nome}" Width="200" Padding="4" Margin="0,0,15,0"/>
-
-            <TextBlock Text="Reparto" VerticalAlignment="Center" Margin="0,0,6,0"/>
-            <TextBox Text="{Binding Reparto}" Width="150" Padding="4" Margin="0,0,15,0"/>
-
-            <Button Content="Aggiungi" Command="{Binding AggiungiCommand}" Padding="15,4"/>
+        <!-- Intestazione -->
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Macchine" Style="{StaticResource TitoloPagina}"/>
+            <TextBlock Style="{StaticResource SottotitoloPagina}">
+                <Run Text="Macchine registrate: "/><Run Text="{Binding Macchine.Count, Mode=OneWay}"/>
+            </TextBlock>
         </StackPanel>
 
-        <!-- Messaggio di errore -->
-        <TextBlock Grid.Row="2" Text="{Binding MessaggioErrore}" Foreground="Red" Margin="0,0,0,10"/>
+        <!-- Card: nuova macchina -->
+        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,24,0,0">
+            <StackPanel>
+                <TextBlock Text="NUOVA MACCHINA" Style="{StaticResource IntestazioneColonna}" Margin="0,0,0,16"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-        <!-- Elenco macchine -->
-        <DataGrid Grid.Row="3" ItemsSource="{Binding Macchine}"
-                  AutoGenerateColumns="False" IsReadOnly="True"
-                  ColumnWidth="*" HeadersVisibility="Column"
-                  CanUserAddRows="False" GridLinesVisibility="Horizontal">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Codice" Binding="{Binding Codice}"/>
-                <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="2*"/>
-                <DataGridTextColumn Header="Reparto" Binding="{Binding Reparto}"/>
-                <DataGridCheckBoxColumn Header="Attiva" Binding="{Binding Attiva}" Width="80"/>
-            </DataGrid.Columns>
-        </DataGrid>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Codice" Style="{StaticResource EtichettaCampo}"/>
+                        <TextBox Text="{Binding Codice}" Style="{StaticResource CampoTesto}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Nome" Style="{StaticResource EtichettaCampo}"/>
+                        <TextBox Text="{Binding Nome}" Style="{StaticResource CampoTesto}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4">
+                        <TextBlock Text="Reparto" Style="{StaticResource EtichettaCampo}"/>
+                        <TextBox Text="{Binding Reparto}" Style="{StaticResource CampoTesto}"/>
+                    </StackPanel>
+                    <Button Grid.Column="6" Content="Aggiungi macchina" Command="{Binding AggiungiCommand}"
+                            Style="{StaticResource PulsantePrimario}" VerticalAlignment="Bottom" Height="40" Padding="20,0"/>
+                </Grid>
+
+                <TextBlock Text="{Binding MessaggioErrore}" Style="{StaticResource Messaggio}"
+                           Foreground="{StaticResource ColoreErrore}" Margin="0,12,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Card: elenco macchine -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Padding="0" Margin="0,24,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Intestazione della tabella -->
+                <Border Grid.Row="0" Background="#FAFBFC" Padding="24,14" CornerRadius="12,12,0,0"
+                        BorderBrush="{StaticResource ColoreBordo}" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="CODICE" Style="{StaticResource IntestazioneColonna}"/>
+                        <TextBlock Grid.Column="1" Text="NOME" Style="{StaticResource IntestazioneColonna}"/>
+                        <TextBlock Grid.Column="2" Text="REPARTO" Style="{StaticResource IntestazioneColonna}"/>
+                        <TextBlock Grid.Column="3" Text="STATO" Style="{StaticResource IntestazioneColonna}"/>
+                    </Grid>
+                </Border>
+
+                <!-- Righe: una per macchina -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Macchine}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="24,14" BorderBrush="#EEF0F3" BorderThickness="0,0,0,1">
+                                    <Grid>
+                                        <!-- Le STESSE colonne dell'intestazione -->
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="140"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="120"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Codice}" Style="{StaticResource CellaTabella}"
+                                                   FontFamily="Consolas" FontSize="13" Foreground="{StaticResource ColoreTestoSecondario}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Nome}" Style="{StaticResource CellaTabella}" FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Reparto}" Style="{StaticResource CellaTabella}"/>
+
+                                        <!-- Badge Attiva / Inattiva -->
+                                        <Border Grid.Column="3" CornerRadius="999" Padding="12,4" HorizontalAlignment="Left">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="#E8F5E9"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Attiva}" Value="False">
+                                                            <Setter Property="Background" Value="#EEF0F3"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <TextBlock FontSize="12" FontWeight="SemiBold">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="Attiva"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource ColoreSuccesso}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Attiva}" Value="False">
+                                                                <Setter Property="Text" Value="Inattiva"/>
+                                                                <Setter Property="Foreground" Value="{StaticResource ColoreTestoSecondario}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
