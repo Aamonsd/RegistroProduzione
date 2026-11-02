@@ -22,6 +22,7 @@ namespace RegistroProduzione.Wpf.ViewModels
             get { return viewModelCorrente; }
             private set 
             {
+                (viewModelCorrente as IDisposable)?.Dispose();
                 viewModelCorrente = value;
                 OnPropertyChanged(nameof(ViewModelCorrente));
             }

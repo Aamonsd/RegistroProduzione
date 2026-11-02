@@ -6,7 +6,35 @@
              xmlns:local="clr-namespace:RegistroProduzione.Wpf.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Registrazione Produzione" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,15" ></TextBlock>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,10">
+            <TextBlock Text="Macchina" Margin="0,0,6,0" VerticalAlignment="Center" ></TextBlock>
+            <ComboBox ItemsSource="{Binding Macchine}" SelectedItem="{Binding MacchinaSelezionata}" DisplayMemberPath="Nome" Width="200" Margin="0,0,15,0"></ComboBox>
+            <TextBlock Text="Data" Margin="0,0,6,0 " VerticalAlignment="Center"></TextBlock>
+            <DatePicker SelectedDate="{Binding Data}" Width="130" Margin="0,0,15,0"  ></DatePicker>
+            <TextBlock Text="Turno" Margin="0,0,6,0 " VerticalAlignment="Center" ></TextBlock>
+            <ComboBox ItemsSource="{Binding Turni}" SelectedItem="{Binding TurnoSelezionato}" Margin="0,0,15,0" Width="50"></ComboBox>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,6,0,0">
+            <TextBlock Text="Pezzi buoni" Margin="0,0,6,0" VerticalAlignment="Center"></TextBlock>
+            <TextBox Text="{Binding PezziBuoni}" Width="50" Margin="0,0,15,0" ></TextBox>
+            <TextBlock Text="Pezzi scartati" Margin="0,0,6,0" VerticalAlignment="Center"></TextBlock>
+            <TextBox Text="{Binding PezziScartati}" Width="50" Margin="0,0,15,0" ></TextBox>
+            <Button Content="Registra" Command="{Binding RegistraCommand}"></Button>
+        </StackPanel>
+        <StackPanel Margin="0,15,0,0"  Grid.Row="3">
+            <TextBlock Text="{Binding MessaggioErrore}" Foreground="Red" Margin="0,0,0,5" ></TextBlock>
+            <TextBlock Text="{Binding MessaggioEsito}" Foreground="Green" Margin="0,0,0,5" ></TextBlock>
+            <TextBlock Text="{Binding AvvisoScarto}" Foreground="Orange" Margin="0,0,0,5"></TextBlock>
             
+        </StackPanel>
+        
     </Grid>
 </UserControl>
